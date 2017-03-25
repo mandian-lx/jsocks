@@ -4,7 +4,7 @@ Summary:	A pure Java SOCKS Server
 Name:		jsocks
 Version:	1.01
 Release:	1
-License:	Apache Software License
+License:	LGPLv2
 Group:		Development/Java
 URL:		http://jsocks.sourceforge.net
 #Source0:	https://sourceforge.net/projects/%{name}/files/%{name}/%{version}/%{name}_code%{version}.zip
@@ -16,10 +16,12 @@ URL:		http://jsocks.sourceforge.net
 # find jsocks-1.01 -name "CVS*" -type d -exec rm -fr {} \; 2> /dev/null
 # tar Jcf jsocks-1.01.tar.xz jsocks-1.01
 Source0:	%{name}-%{version}.tar.xz
+Source1:	%{name}.bnd
 BuildArch:	noarch
 
 BuildRequires:	jpackage-utils
 BuildRequires:	java-devel
+BuildRequires:	aqute-bnd
 
 Requires:	java-headless
 Requires:	jpackage-utils
@@ -51,6 +53,12 @@ API documentation for %{name}.
 find . -name "*.jar" -delete
 find . -name "*.class" -delete
 
+# .bnd
+cp %{SOURCE1} %{name}.bnd
+
+# fix version in manifest
+sed -i -e "s|@VERSION@|%{version}|g" %{name}.bnd
+
 %build
 # compile
 javac -encoding UTF-8 -verbose \
@@ -65,6 +73,10 @@ javac -encoding UTF-8 -verbose \
 
 %jar cf %{name}_apps.jar \
 		*.class *.properties *.gif
+
+# add OSGi manifest into jar
+java -jar $(build-classpath aqute-bnd) wrap -properties %{name}.bnd %{name}.jar
+mv %{name}.bar %{name}.jar
 
 # add the index to the jars
 %jar i %{name}.jar

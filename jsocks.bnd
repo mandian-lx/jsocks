@@ -1,0 +1,11 @@
+Bundle-Name:         jsocks
+Bundle-Version:      @VERSION@
+Import-Package:      *
+Bundle-License:      https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html
+Export-Package:      socks.*
+Bundle-Description:  A pure Java SOCKS Server
+Bundle-Vendor:       http://jsocks.sourceforge.net/
+Bundle-DocURL:       http://jsocks.sourceforge.net/docs/index.html
+Specification-Title: jSOCKS
+Specification-Version: @VERSION@
+
